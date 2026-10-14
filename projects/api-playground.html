@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add('js')</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Playground — Anna Podvoiska</title>
+  <meta name="description" content="Turning powerful image APIs into an experience people can explore. Claid.ai API Playground, 2022 — case study by Anna Podvoiska.">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;700&family=Inter:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/project.css">
+</head>
+<body class="project">
+  <header class="site-header project__top">
+    <a class="brand" href="../index.html">
+      <span class="brand__name">Anna Podvoiska</span>
+      <span class="brand__role">Product Designer</span>
+    </a>
+    <a class="project__close" href="../index.html" aria-label="Close and go back to the home page">
+      <svg viewBox="0 0 46 46" aria-hidden="true"><path d="M28.593 15.993a1 1 0 0 1 1.414 1.414l-5.593 5.593 5.593 5.593a1 1 0 0 1-1.414 1.414L23 24.414l-5.593 5.593a1 1 0 0 1-1.414-1.414L21.586 23l-5.593-5.593a1 1 0 0 1 1.414-1.414L23 21.586l5.593-5.593Z"/></svg>
+    </a>
+  </header>
+
+  <header class="project__head">
+    <h1 class="project__title">API Playground</h1>
+    <p class="project__meta"><span>Claid.ai</span><span>2022</span></p>
+  </header>
+
+  <main class="project__body">
+    <section class="project__text">
+      <p class="project__lead">Turning powerful image APIs into an experience people can explore.</p>
+      <dl class="project__facts">
+        <div>
+          <dt>Scope</dt>
+          <dd>UX · UI · Interaction Design · Product Design</dd>
+        </div>
+        <div>
+          <dt>Position</dt>
+          <dd>Product Designer</dd>
+        </div>
+      </dl>
+      <p class="project__lead">At Claid, I worked across the UX and UI of a series of new AI-powered image features, helping translate complex image-processing capabilities into clear and approachable product experiences.<br>One of the key projects was the Q3 2022 release, which introduced the API Playground alongside new image-processing capabilities and improvements across the platform.</p>
+    </section>
+
+    <div class="slider slider--peek" data-slider data-start="1" aria-roledescription="carousel" aria-label="Claid API screens">
+      <div class="slider__track" tabindex="0">
+        <figure class="slider__slide"><img src="../assets/projects/api-playground/slide-1.jpg" width="1932" height="1056" alt="Claid API dashboard: welcome screen with API calls, usage and quick-start guides" loading="lazy"></figure>
+        <figure class="slider__slide"><img src="../assets/projects/api-playground/slide-2.jpg" width="1932" height="1056" alt="API Playground: upscale and decompress settings with a before/after palm tree photo"></figure>
+        <figure class="slider__slide"><img src="../assets/projects/api-playground/slide-3.jpg" width="1932" height="1056" alt="API Playground: color adjustments next to the generated JSON request and response" loading="lazy"></figure>
+      </div>
+    </div>
+
+    <section class="project__text">
+      <p>The API Playground was designed specifically for developers and potential API customers who wanted to explore Claid’s capabilities before integrating the API themselves.</p>
+      <p>The challenge was that someone could be interested in buying the API without necessarily knowing how to set it up locally or where to start. We needed to give them a way to understand what the API could do, experiment with real operations, and see what an integration would actually look like — without setting up a development environment first.</p>
+      <div>
+        <p>I designed the Playground as a hands-on exploration space where users could:</p>
+        <ul class="project__list">
+          <li>Browse and discover the available image-processing operations</li>
+          <li>Configure an operation and test it on their own image</li>
+          <li>See the resulting image immediately</li>
+          <li>Understand the API request generated from their configuration</li>
+          <li>Explore the underlying JSON structure</li>
+          <li>Copy the request and use it directly in their own development environment</li>
+        </ul>
+      </div>
+      <p>This created a bridge between exploring the product and actually integrating the API.<br>Instead of asking users to read documentation and imagine how an API call would work, the Playground let them experience the workflow first and then take the generated request with them.</p>
+    </section>
+
+    <figure class="project__panel project__panel--inset">
+      <img src="../assets/projects/api-playground/overview.jpg" width="1776" height="1140" alt="Claid API Playground overview: operations such as upscaling, background removal and smart compression, with settings panels and API key modal" loading="lazy">
+    </figure>
+
+    <section class="project__text">
+      <h2 class="project__subhead">Designing for different levels of technical knowledge</h2>
+      <p>The experience needed to work for people who were technically confident as well as those who were just starting to explore the API.<br>I focused on making the visual configuration easy to understand while keeping the underlying technical details visible and accessible. Users could start with simple controls, experiment with different operations, and progressively move towards the JSON and API request they would eventually use in their own integration.</p>
+      <h2 class="project__subhead">Beyond the Playground</h2>
+      <p>Alongside the API Playground, I designed UX and UI for a broader set of Q3 features, including background removal, upscaling, smart backgrounds, output controls, compression, decompression, and batch processing.<br>Although each feature had different technical requirements, I worked to make them feel like part of one coherent product experience — using consistent patterns for configuration, feedback, processing states, results, and error handling.</p>
+    </section>
+  </main>
+
+  <script src="../js/slider.js"></script>
+  <script>
+    // Esc closes the case study, like the ✕ button
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') location.href = '../index.html';
+    });
+  </script>
+  <script src="../js/site.js"></script>
+</body>
+</html>

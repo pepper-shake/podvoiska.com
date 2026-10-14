@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+  // ?embed → used inside the home card: fills its frame, no background/hint
+  if (new URLSearchParams(location.search).has('embed')) document.documentElement.classList.add('embed');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloudberry Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet">
+<style>
+  /* Cloudberry story app prototype, Figma: Concepts / Section 2 (2573:41244).
+     Loop: Library → tap story → Story page → tap Read → Book loader → Reader → tap Listen → Player → back. */
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #d4d4d4;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .fit { position: fixed; left: 50%; top: 50%; width: 430px; height: 932px; transform: translate(-50%, -50%); }
+
+  /* phone: the 430×932 screens, clipped to the device corner radius */
+  .phone {
+    position: relative;
+    width: 430px; height: 932px;
+    border-radius: 56px;
+    overflow: hidden;
+    background: #150427;
+    isolation: isolate;
+  }
+  .screen { position: absolute; inset: 0; opacity: 0; will-change: opacity, transform; }
+  .screen > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .abs { position: absolute; }
+
+  /* bars: a patch in the page colour hides the static bar in the export, then the live bar is drawn */
+  .patch { background: #150427; }
+  .track { height: 4px; border-radius: 30px; background: #422f57; overflow: hidden; }
+  .fill  { height: 100%; width: 0; border-radius: 30px; background: #fcc169; }
+  .knob  { width: 16px; height: 16px; border-radius: 50%; background: #fcc169; margin-left: -8px; }
+  .time  { font: 400 14px/20px 'Poppins', sans-serif; color: #b9b8cc; }
+
+  /* tap feedback */
+  .tap {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(255, 255, 255, .55);
+    transform: translate(-50%, -50%) scale(.2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .hint {
+    position: fixed; left: 16px; bottom: 14px;
+    font: 500 12px/1.5 system-ui, sans-serif; color: #6b6b6b;
+    transition: opacity .3s;
+  }
+  .hint kbd { font: inherit; padding: 1px 6px; border-radius: 4px; background: #e8e8e8; color: #333; }
+  body.clean .hint { opacity: 0; }
+
+  /* embedded in a page (iframe): scale to the frame width, no chrome around the phone */
+  .embed body { background: transparent; display: block; }
+  .embed .fit { left: 0; top: 0; transform-origin: 0 0; }
+  .embed .phone { border-radius: 0; }
+  .embed .hint { display: none; }
+</style>
+</head>
+<body>
+  <div class="fit" id="fit">
+    <div class="phone" id="phone">
+      <div class="screen" data-screen="library"><img src="assets/library.jpg" alt=""></div>
+
+      <div class="screen" data-screen="story"><img src="assets/story.jpg" alt=""></div>
+
+      <div class="screen" data-screen="loader">
+        <img src="assets/loader.jpg" alt="">
+        <div class="abs patch" style="left:40px; top:842px; width:350px; height:12px"></div>
+        <div class="abs track" style="left:44px; top:846px; width:342px"><div class="fill" id="loadFill"></div></div>
+      </div>
+
+      <div class="screen" data-screen="reader"><img src="assets/reader.jpg" alt=""></div>
+
+      <div class="screen" data-screen="player">
+        <img src="assets/player.jpg" alt="">
+        <div class="abs patch" style="left:16px; top:636px; width:398px; height:50px"></div>
+        <div class="abs track" style="left:24px; top:646px; width:382px"><div class="fill" id="playFill"></div></div>
+        <div class="abs knob" id="knob" style="top:640px"></div>
+        <div class="abs time" id="time" style="left:24px; top:664px">00:58</div>
+        <div class="abs time" style="right:24px; top:664px">05 : 00</div>
+      </div>
+
+      <div class="abs tap" id="tap"></div>
+    </div>
+  </div>
+
+  <p class="hint"><kbd>Space</kbd> pause / play · <kbd>R</kbd> restart · <kbd>H</kbd> hide this</p>
+
+<script>
+  // Timeline in seconds (one loop = LOOP s)
+  const LOOP = 18.6;
+  const SEGMENTS = [
+    // screen, starts at (s). Each one fades in over FADE on top of the previous one.
+    ['library', 0],
+    ['story',   2.6],
+    ['loader',  5.4],
+    ['reader',  8.2],
+    ['player', 11.6],
+    ['library', 18.2],  // back to the start, so the loop is seamless
+  ];
+  const FADE = 0.4;
+  const TAPS = [
+    { at: 1.9,  x: 215, y: 380 },  // the story card in the library
+    { at: 4.7,  x: 52,  y: 410 },  // "Read" (book) button on the story page
+    { at: 10.9, x: 247, y: 160 },  // "Listen" (headphones) in the reader
+  ];
+  const TAP_DUR = 0.6;
+
+  const $ = (s) => document.querySelector(s);
+  const screens = {};
+  document.querySelectorAll('[data-screen]').forEach((el) => { screens[el.dataset.screen] = el; });
+  const loadFill = $('#loadFill'), playFill = $('#playFill'), knob = $('#knob'), time = $('#time'), tap = $('#tap');
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2); // easeInOutCubic
+  const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+  function render(t) {
+    // screens: the new screen fades in (with a slight settle) on top of the previous one
+    let i = SEGMENTS.length - 1;
+    while (i > 0 && t < SEGMENTS[i][1]) i--;
+    const [cur, from] = SEGMENTS[i];
+    const prev = SEGMENTS[(i - 1 + SEGMENTS.length) % SEGMENTS.length][0];
+    const o = ease(clamp((t - from) / FADE));
+    for (const name in screens) {
+      const s = screens[name].style;
+      if (name === cur) { s.opacity = name === prev ? 1 : o; s.zIndex = 2; s.transform = `scale(${1.02 - 0.02 * o})`; }
+      else if (name === prev) { s.opacity = 1; s.zIndex = 1; s.transform = 'none'; }
+      else { s.opacity = 0; s.zIndex = 0; }
+    }
+
+    // loader bar fills while the book "loads"
+    loadFill.style.width = `${ease(clamp((t - 5.7) / 2.2)) * 100}%`;
+
+    // player: playing from 00:58, the bar and knob move along with the time
+    const played = 58 + clamp(t - 11.9, 0, 6.3);
+    const pct = played / 300;
+    playFill.style.width = `${pct * 100}%`;
+    knob.style.left = `${24 + 382 * pct}px`;
+    time.textContent = fmt(played);
+
+    // tap ripple
+    let shown = false;
+    for (const { at, x, y } of TAPS) {
+      const p = (t - at) / TAP_DUR;
+      if (p >= 0 && p <= 1) {
+        tap.style.left = `${x}px`; tap.style.top = `${y}px`;
+        tap.style.transform = `translate(-50%, -50%) scale(${0.3 + 0.9 * ease(p)})`;
+        tap.style.opacity = String(p < .25 ? p / .25 : 1 - (p - .25) / .75);
+        shown = true;
+      }
+    }
+    if (!shown) tap.style.opacity = '0';
+  }
+
+  // playback clock (pausable)
+  let start = performance.now(), pausedAt = null;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function frame(now) {
+    const t = (((pausedAt ?? now) - start) / 1000) % LOOP;
+    render(t);
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  if (reduce) render(0.5); else requestAnimationFrame(frame);
+
+  // Scale the 430×932 phone to fit the window
+  const fit = $('#fit');
+  const embed = document.documentElement.classList.contains('embed');
+  const resize = () => {
+    if (embed) { fit.style.transform = `scale(${innerWidth / 430})`; return; }
+    const s = Math.min((innerWidth - 64) / 430, (innerHeight - 64) / 932);
+    fit.style.transform = `translate(-50%, -50%) scale(${s})`;
+  };
+  addEventListener('resize', resize); resize();
+
+  addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (pausedAt === null) pausedAt = performance.now();
+      else { start += performance.now() - pausedAt; pausedAt = null; }
+    } else if (e.key === 'r' || e.key === 'R') {
+      start = performance.now(); pausedAt = null;
+    } else if (e.key === 'h' || e.key === 'H') {
+      document.body.classList.toggle('clean');
+    }
+  });
+</script>
+</body>
+</html>

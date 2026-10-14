@@ -1,0 +1,351 @@
+/* ==========================================================================
+   Podvoiska — home (dark card grid)
+   Figma: Concepts / Desktop - 1 (2543:13520)
+   ========================================================================== */
+
+:root {
+  --bg: #1b1b1b;
+  --card: #464441;
+  --card-hover: #4f4d4a;
+  --ink: #fff7e9;
+  --ink-soft: #b9b3a8;
+  --ink-muted: #a29f9a;
+
+  --font-display: 'Host Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --page-max: 1338px;
+  --gutter: clamp(16px, 3.6vw, 51px);
+  --gap: 24px;
+  --radius: 20px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 42px var(--gutter) 132px;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ---------- header ---------- */
+.site-header {
+  max-width: var(--page-max);
+  margin: 0 auto 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.brand { display: flex; flex-direction: column; gap: 8px; }
+.brand__name {
+  font-size: 31px;
+  line-height: .92;
+  letter-spacing: -.01em;
+}
+.brand__role {
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.site-nav { display: flex; gap: 16px; }
+.site-nav a {
+  font-size: 18px;
+  line-height: .92;
+  letter-spacing: -.01em;
+  transition: opacity .2s;
+}
+.site-nav a:hover { opacity: .65; }
+
+/* ---------- grid ---------- */
+.grid {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 430 / 432;
+  border-radius: var(--radius);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- visual card ----------
+   Default: the visual fills the card.
+   Hover (Figma 2546:12570): the visual shrinks into a 275/432-high panel at the bottom,
+   16px in from the sides, and the title + meta fade in above it. */
+.card--visual {
+  display: block;
+  background: var(--card-hover);
+  --panel-h: 63.66%; /* 275 / 432 */
+}
+.card__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #2a2928;
+  transition:
+    top .6s var(--ease), left .6s var(--ease), right .6s var(--ease),
+    border-radius .6s var(--ease);
+}
+.card__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card__head {
+  position: absolute;
+  left: 30px; right: 30px;
+  bottom: calc(var(--panel-h) + 42px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .35s var(--ease), transform .5s var(--ease);
+}
+.card--visual .card__arrow { stroke: var(--ink); }
+
+.card--visual:is(:hover, :focus-visible) .card__frame {
+  top: calc(100% - var(--panel-h));
+  left: 16px; right: 16px;
+  border-radius: 16px 16px 0 0;
+}
+.card--visual:is(:hover, :focus-visible) .card__head {
+  opacity: 1;
+  transform: none;
+  transition-delay: .12s;
+}
+.card--visual:is(:hover, :focus-visible) .card__arrow { transform: translate(4px, -4px); }
+.card--visual:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- before/after card (API playground) ----------
+   Figma: Concepts / claidai-03 (2569:41016). A square 1630×1630 composition, cover-fitted to the frame.
+   The photo window loops a divider between a pixelated "before" and the sharp "after". */
+@property --ba-x {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 36%;
+}
+.card__frame:has(.ba) { container-type: size; background: #f3f5f9; }
+.ba {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: max(100cqw, 100cqh);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  container-type: inline-size;
+  animation: ba-sweep 7s infinite;
+}
+@keyframes ba-sweep {
+  0%   { --ba-x: 36%; animation-timing-function: linear; }
+  8%   { --ba-x: 36%; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+  34%  { --ba-x: 84%; animation-timing-function: linear; }
+  44%  { --ba-x: 84%; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+  74%  { --ba-x: 16%; animation-timing-function: linear; }
+  82%  { --ba-x: 16%; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+  100% { --ba-x: 36%; }
+}
+.ba__base, .ba__btn { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* positions are % of the 1630px Figma frame */
+.ba__photo {
+  position: absolute;
+  left: 37.75%; top: 18.21%;
+  width: 49.82%; height: 33.26%;
+  overflow: hidden;
+}
+.ba__photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ba__before { clip-path: inset(0 calc(100% - var(--ba-x)) 0 0); }
+.ba__line {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: var(--ba-x);
+  width: max(1px, .12cqw);
+  background: #fff;
+  transform: translateX(-50%);
+}
+.ba__handle {
+  position: absolute;
+  top: 48.8%;
+  left: var(--ba-x);
+  width: 3.1cqw;
+  aspect-ratio: 1;
+  border: max(1.5px, .27cqw) solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+/* the semi-transparent Download button sits over the photo, so keep a copy of it on top */
+.ba__btn { clip-path: inset(18.93% 9.5% 78.64% 82.96% round .55cqw); }
+
+/* ---------- text card ---------- */
+.card--text {
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 42px;
+  padding: 32px;
+  transition: background-color .35s var(--ease);
+}
+.card__body { display: flex; flex-direction: column; gap: 16px; }
+.card__title {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: .92;
+  letter-spacing: -.01em;
+  max-width: 13em;
+}
+.card__arrow {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin: -6px 0 -4px 8px;
+  vertical-align: middle;
+  fill: none;
+  stroke: var(--ink-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .35s var(--ease), stroke .35s var(--ease);
+}
+.card__desc {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.3;
+}
+.card__meta {
+  display: flex;
+  gap: 12px;
+  font-weight: 300;
+  font-size: 19px;
+  line-height: .92;
+  letter-spacing: -.01em;
+  color: var(--ink-muted);
+}
+@media (hover: hover) {
+  .card--text:hover { background: var(--card-hover); }
+  .card--text:hover .card__arrow { transform: translate(4px, -4px); stroke: var(--ink); }
+}
+.card--text:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- composed cover with a live phone screen (Personal kids stories)
+   Figma: Concepts / 2576:42509 — a 1374×1374 composition, cover-fitted like .ba.
+   Layers: background + side screens + phone frame, the prototype animation (iframe) in the phone, clouds on top. */
+.card__frame:has(.comp) { container-type: size; }
+.comp {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: max(100cqw, 100cqh);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  container-type: inline-size;
+}
+.comp__base { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* phone screen: 484×1034 at (440, 165), corner radius 60 (all in 1374 units) */
+.comp__screen {
+  position: absolute;
+  left: 31.999%; top: 12.009%;
+  width: 35.249%; height: 75.266%;
+  border-radius: 4.367cqw;
+  overflow: hidden;
+}
+.comp__screen iframe {
+  position: absolute;
+  left: 0; top: .483%;
+  width: 100%; height: 101.44%; /* 430×932 screen at 484 wide */
+  border: 0;
+  pointer-events: none;
+}
+.comp__clouds { position: absolute; left: 0; top: 50%; width: 100%; height: 50%; }
+
+
+/* ---------- cream card with sliding illustrations (Figma: Concepts / Section 1, 2573:41213) ---------- */
+.card--cream { background: #fdf6eb; color: #1b1b1b; }
+.card--cream .card__meta { color: var(--ink-muted); }
+@media (hover: hover) {
+  .card--cream:hover { background: #f8eedf; }
+}
+.card--cream:focus-visible { outline-color: var(--ink); }
+/* icons row: 938×218 in a 430 card, sits 6px above the card's top edge */
+.card__marquee {
+  position: absolute;
+  left: 0; right: 0;
+  top: -1.4%;
+  height: 50.5%; /* 218 / 432 */
+  overflow: hidden;
+  pointer-events: none;
+}
+.card__marquee-track {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  animation: card-marquee 34s linear infinite;
+}
+.card__marquee-track img { height: 100%; width: auto; max-width: none; }
+/* two identical tiles side by side; moving by one tile width loops seamlessly */
+@keyframes card-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- reveal on scroll (js/site.js), like the Framer site ---------- */
+.js :is(.grid > .card, .project__head, .project__body > *) {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1.2s cubic-bezier(.2, .9, .25, 1) var(--dl, .1s),
+    transform 1.2s cubic-bezier(.2, .9, .25, 1) var(--dl, .1s),
+    background-color .35s var(--ease);
+}
+.js :is(.grid > .card, .project__head, .project__body > *).is-in { opacity: 1; transform: none; }
+
+/* ---------- bottom blur (js/site.js) ---------- */
+.bottom-blur {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 84px;
+  z-index: 3;
+  pointer-events: none;
+}
+.bottom-blur > div { position: absolute; inset: 0; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1080px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .card__marquee { height: 36%; } /* text wraps more on narrower cards, keep the icons clear of the title */
+  .card__title { font-size: 28px; }
+}
+@media (max-width: 640px) {
+  body { padding-top: 28px; padding-bottom: 64px; }
+  .site-header { margin-bottom: 40px; }
+  .brand__name { font-size: 26px; }
+  .brand__role { font-size: 17px; }
+  .site-nav a { font-size: 16px; }
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .card--text { padding: 24px; gap: 32px; }
+  .card__meta { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card__frame, .card__head, .card__arrow, .card--text { transition: none; }
+  .ba { animation: none; }
+  .card__marquee-track { animation: none; }
+  .js :is(.grid > .card, .project__head, .project__body > *) { opacity: 1; transform: none; transition: none; }
+}

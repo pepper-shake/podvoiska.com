@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Animatable split position: 0% = all light, 100% = all dark */
+  @property --split {
+    syntax: '<percentage>';
+    inherits: true;
+    initial-value: 0%;
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+
+  html, body { height: 100%; }
+  body {
+    background: #d4d4d4;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .fit {
+    position: fixed; left: 50%; top: 50%;
+    width: 1024px; height: 768px;
+    transform: translate(-50%, -50%);
+  }
+
+  .stage {
+    position: relative;
+    width: 1024px;
+    height: 768px;
+    border-radius: 40px;
+    overflow: hidden;
+    isolation: isolate;
+    animation: wipe 7s infinite;
+  }
+  .stage.paused { animation-play-state: paused; }
+
+  /* light → dark (left to right), hold, dark → light (right to left), hold */
+  @keyframes wipe {
+    0%     { --split: 0%;   animation-timing-function: linear; }
+    12%    { --split: 0%;   animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+    40%    { --split: 100%; animation-timing-function: linear; }
+    56%    { --split: 100%; animation-timing-function: cubic-bezier(.65, 0, .35, 1); }
+    84%    { --split: 0%;   animation-timing-function: linear; }
+    100%   { --split: 0%; }
+  }
+
+  .layer { position: absolute; inset: 0; }
+  .layer.dark { clip-path: inset(0 calc(100% - var(--split)) 0 0); }
+
+  .abs { position: absolute; }
+
+  /* ---------- theme tokens ---------- */
+  .light {
+    --bg: #edeef0;
+    --bg-0: rgba(237, 238, 240, 0);
+    --text: #2d2c2c;
+    --sel: #e2ddf6;
+    --bar: #fefefe;
+    --bar-shadow: rgba(177, 177, 177, 0.4);
+    --ai: #e5dcff;
+    --label: #161719;
+    --divider: #d8d7d8;
+    --active: #ededed;
+    --tip-bg: #ffffff;
+    --tip-text: #000000;
+  }
+  .dark {
+    --bg: #161719;
+    --bg-0: rgba(22, 23, 25, 0);
+    --text: #f3f3f3;
+    --sel: #4c3d54;
+    --bar: #22242b;
+    --bar-shadow: rgba(42, 42, 42, 0.4);
+    --ai: #d9bfff;
+    --label: #cdcdcd;
+    --divider: #34363c;
+    --active: #3d404b;
+    --tip-bg: #22242b;
+    --tip-text: #e5e5e5;
+  }
+
+  .layer { background: var(--bg); }
+
+  .selection { left: 111px; top: 307px; width: 783px; height: 24px; background: var(--sel); }
+  .handle { width: 5px; height: 29px; display: block; }
+  .handle.l { left: 108px; top: 302px; }
+  .handle.r { left: 892px; top: 308px; transform: rotate(180deg); }
+
+  .copy {
+    left: 111px; top: 303px; width: 802px;
+    font-size: 16px; line-height: 30px; font-weight: 400;
+    color: var(--text);
+  }
+
+  .fade {
+    left: 0; top: 335px; width: 1024px; height: 159px;
+    background: linear-gradient(to bottom, var(--bg-0), var(--bg));
+  }
+
+  .toolbar {
+    left: 211px; top: 240px; height: 42px;
+    display: flex; align-items: center; gap: 4px;
+    padding: 10px 6px;
+    background: var(--bar);
+    border-radius: 12px;
+    filter: drop-shadow(0 10px 25px var(--bar-shadow));
+  }
+  .toolbar img { width: 14px; height: 14px; display: block; }
+  .chip {
+    display: flex; align-items: center; gap: 4px;
+    padding: 4px 8px; border-radius: 8px;
+    font-size: 14px; line-height: 22px; font-weight: 600;
+    color: var(--label); white-space: nowrap;
+  }
+  .chip.ai { background: var(--ai); color: #22242b; }
+  .chip.align { padding: 4px 8px; }
+  .chip.align .pad { padding: 4px; }
+  .chip.cite img { width: 16px; height: 16px; }
+  .chip.color { padding: 8px; }
+  .sep { width: 1px; height: 16px; border-radius: 20px; background: var(--divider); flex-shrink: 0; }
+  .icons { display: flex; gap: 2px; }
+  .icon-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    display: grid; place-items: center;
+  }
+  .icon-btn.active { background: var(--active); }
+
+  .cursor { left: 424px; top: 267px; width: 30px; height: 30px; }
+  .cursor img {
+    position: absolute;
+    left: calc(18.48% - 0.6px); top: calc(18.32% - 0.6px);
+    width: 18.83px; height: 19.81px;
+  }
+
+  .tooltip {
+    left: 392px; top: 210px;
+    padding: 6px; border-radius: 6px;
+    background: var(--tip-bg);
+    color: var(--tip-text);
+    font-size: 12px; font-weight: 500; line-height: 12px;
+    white-space: nowrap;
+  }
+
+  /* ---------- controls (hidden while recording) ---------- */
+  .hint {
+    position: fixed; left: 16px; bottom: 14px;
+    font: 500 12px/1.5 'Poppins', sans-serif;
+    color: #6b6b6b;
+    transition: opacity .3s;
+  }
+  .hint kbd {
+    font: inherit; padding: 1px 6px; border-radius: 4px;
+    background: #e8e8e8; color: #333;
+  }
+  body.clean .hint { opacity: 0; }
+</style>
+</head>
+<body>
+  <div class="fit" id="fit">
+    <div class="stage" id="stage"></div>
+  </div>
+
+  <p class="hint"><kbd>Space</kbd> pause / play · <kbd>R</kbd> restart · <kbd>H</kbd> hide this</p>
+
+<script>
+  const text = 'Humans have always been driven by an insatiable curiosity to explore the unknown, from charting distant oceans to climbing the highest mountains. But what lies beyond our planet offers perhaps the most alluring frontier of all: space. With billions of stars and countless unexplored worlds, space exploration sparks questions that push the limits of human imagination. Humans have always been driven by an insatiable curiosity to explore the unknown, from charting distant oceans to climbing the highest mountains. But what lies beyond our planet offers perhaps the most alluring';
+
+  const layer = (t) => {
+    const a = (name) => `assets/${t}/${name}.svg`;
+    return `
+    <div class="layer ${t}">
+      <div class="abs selection"></div>
+      <img class="abs handle l" src="${a('union-l')}" alt="">
+      <img class="abs handle r" src="${a('union-r')}" alt="">
+      <p class="abs copy">${text}</p>
+
+      <div class="abs toolbar">
+        <div class="chip ai"><img src="assets/ai.svg" alt="">Edit with AI</div>
+        <div class="sep"></div>
+        <div class="chip">Text<img src="${a('arrow1')}" alt=""></div>
+        <div class="sep"></div>
+        <div class="icons">
+          <div class="icon-btn active"><img src="${a('bold')}" alt=""></div>
+          <div class="icon-btn"><img src="${a('italic')}" alt=""></div>
+          <div class="icon-btn"><img src="${a('underline')}" alt=""></div>
+          <div class="icon-btn"><img src="${a('strike')}" alt=""></div>
+        </div>
+        <div class="sep"></div>
+        <div class="chip align"><span class="pad"><img src="${a('align')}" alt=""></span><img src="${a('arrow2')}" alt=""></div>
+        <div class="sep"></div>
+        <div class="chip cite"><img src="${a('cite')}" alt="">Cite</div>
+        <div class="sep"></div>
+        <div class="icon-btn"><img src="${a('link')}" alt=""></div>
+        <div class="sep"></div>
+        <div class="chip color"><img src="${a('color')}" alt=""><img src="${a('arrow3')}" alt=""></div>
+      </div>
+
+      <div class="abs fade"></div>
+      <div class="abs cursor"><img src="assets/cursor.svg" alt=""></div>
+      <div class="abs tooltip">Bold ⌘+B</div>
+    </div>`;
+  };
+
+  const stage = document.getElementById('stage');
+  stage.innerHTML = layer('light') + layer('dark');
+
+  // Scale the 1024×768 card to fill the window (vector, so it stays sharp)
+  const fit = document.getElementById('fit');
+  const resize = () => {
+    const s = Math.min((innerWidth - 64) / 1024, (innerHeight - 64) / 768);
+    fit.style.transform = `translate(-50%, -50%) scale(${s})`;
+  };
+  addEventListener('resize', resize);
+  resize();
+
+  addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      stage.classList.toggle('paused');
+    } else if (e.key === 'r' || e.key === 'R') {
+      stage.style.animation = 'none';
+      stage.offsetWidth;
+      stage.style.animation = '';
+      stage.classList.remove('paused');
+    } else if (e.key === 'h' || e.key === 'H') {
+      document.body.classList.toggle('clean');
+    }
+  });
+</script>
+</body>
+</html>

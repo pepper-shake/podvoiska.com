@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Designer Podvoiska Anna</title>
+  <meta name="description" content="Anna Podvoiska — product designer based in Lisbon. MVP design, product redesign, UX audits and end-to-end product design.">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta property="og:title" content="Product Designer Podvoiska Anna">
+  <meta property="og:description" content="Product designer based in Lisbon.">
+  <meta property="og:image" content="assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400&family=Inter:opsz,wght@14..32,400;14..32,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+  <!-- Header: the frosted bar grows into the menu -->
+  <header class="nav load" style="--ld: 0s">
+    <div class="nav__bar">
+      <a href="index.html" class="nav__logo" aria-label="Home">
+        <img src="assets/img/logo.png" alt="Podvoiska logo" width="65" height="65">
+      </a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__menu" id="menu" aria-hidden="true">
+      <ul class="menu__list">
+        <li><a href="index.html"><span class="mono">( _01 )</span><span class="menu__label">Home</span></a></li>
+        <li><a href="projects.html"><span class="mono">( _02 )</span><span class="menu__label">Projects</span></a></li>
+        <li><a href="about.html"><span class="mono">( _03 )</span><span class="menu__label">About</span></a></li>
+        <li><a href="blog.html"><span class="mono">( _04 )</span><span class="menu__label">Blog</span></a></li>
+        <li><a href="contact.html"><span class="mono">( _05 )</span><span class="menu__label">Contact</span></a></li>
+      </ul>
+      <div class="menu__bottom">
+        <a class="underline-link" href="mailto:anna.podvoiska@gmail.com">anna.podvoiska@gmail.com</a>
+        <div class="socials mono">
+          <a href="https://www.linkedin.com/in/podvoiska/" target="_blank" rel="noopener">IN</a><span>/</span>
+          <a href="https://adplist.org/mentors/anna-podvoiska" target="_blank" rel="noopener">ADP</a><span>/</span>
+          <a href="https://medium.com/@podvoiska" target="_blank" rel="noopener">M</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero__title load load--drop">
+        <img src="assets/img/wordmark.png" alt="Podvoiska" width="704" height="109">
+      </h1>
+      <p class="hero__subtitle load load--fade">Product designer based in Lisbon.</p>
+
+      <div class="hero__meta load load--fade-late">
+        <p class="hero__clock mono">( <span id="clock">00:00</span> LISBON )</p>
+        <div class="socials mono">
+          <a href="https://www.linkedin.com/in/podvoiska/" target="_blank" rel="noopener">IN</a><span>/</span>
+          <a href="https://adplist.org/mentors/anna-podvoiska" target="_blank" rel="noopener">ADP</a><span>/</span>
+          <a href="https://medium.com/@podvoiska" target="_blank" rel="noopener">M</a>
+        </div>
+      </div>
+
+      <div class="marquee load load--rise" aria-hidden="true">
+        <ul class="marquee__track">
+          <!-- One set; JS duplicates it for a seamless loop -->
+          <li class="strip strip--a strip--cyan"><video src="assets/img/hero-video-1.mp4" autoplay muted loop playsinline></video></li>
+          <li class="strip strip--b"><img src="assets/img/hero-1.png" alt=""></li>
+          <li class="strip strip--a strip--cyan"><video src="assets/img/hero-video-2.mp4" autoplay muted loop playsinline></video></li>
+          <li class="strip strip--b"><img src="assets/img/hero-2.png" alt=""></li>
+          <li class="strip strip--a"><img src="assets/img/hero-3.png" alt=""></li>
+          <li class="strip strip--b"><img src="assets/img/hero-4.png" alt=""></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Intro statement -->
+    <section class="intro reveal reveal--down">
+      <p class="intro__text" data-words>I specialize in crafting exceptional digital experiences that help my clients achieve their business goals.</p>
+    </section>
+
+    <!-- Latest projects -->
+    <section class="section projects">
+      <div class="section__head reveal reveal--down">
+        <h2 class="h-xl">Latest<br>Projects.</h2>
+        <span class="mono">( _©25 )</span>
+      </div>
+      <div class="projects__grid">
+        <a class="project reveal reveal--down" href="projects/aiwriting.html">
+          <div class="project__media"><img src="assets/img/project-aiwriting.png" alt="AI Writing project" loading="lazy"><img class="project__logo" src="assets/img/logo-aiwriting.png" alt=""></div>
+          <div class="project__meta"><span>AI Writing</span><span class="muted">_ 05.25</span></div>
+        </a>
+        <a class="project reveal reveal--down" href="projects/claidai.html">
+          <div class="project__media"><img src="assets/img/project-claid.jpg" alt="Claid AI project" loading="lazy"><img class="project__logo" src="assets/img/logo-claid.png" alt=""></div>
+          <div class="project__meta"><span>Claid AI</span><span class="muted">_ 05.25</span></div>
+        </a>
+        <a class="project reveal reveal--down" href="projects/letsenhance.html">
+          <div class="project__media"><img src="assets/img/project-letsenhance.jpg" alt="Let's Enhance project" loading="lazy"></div>
+          <div class="project__meta"><span>Let's Enhance</span><span class="muted">_ 05.25</span></div>
+        </a>
+        <a class="project reveal reveal--down" href="projects/genesis.html">
+          <div class="project__media"><img src="assets/img/project-genesis.png" alt="Genesis project" loading="lazy"><img class="project__logo" src="assets/img/logo-genesis.png" alt=""></div>
+          <div class="project__meta"><span>Genesis</span><span class="muted">_ 05.25</span></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section services">
+      <div class="section__head reveal reveal--down">
+        <h2 class="h-xl">Services.</h2>
+        <a class="plus-link" href="contact.html">Get in touch <span class="plus" aria-hidden="true"></span></a>
+      </div>
+      <div class="services__viewport reveal reveal--up">
+        <ul class="services__track">
+          <li class="service" style="--bg: #e5daf6">
+            <img class="service__icon" src="assets/img/service-1.svg" alt="" width="56" height="56">
+            <div>
+              <p class="mono">( 001 )</p>
+              <h3 class="mono service__title">MVP Design for Startups</h3>
+              <p class="service__text">Full UX &amp; UI for a minimum viable product, ready to launch in 1–2 months.</p>
+            </div>
+          </li>
+          <li class="service" style="--bg: #cfffb2">
+            <img class="service__icon" src="assets/img/service-2.svg" alt="" width="56" height="56">
+            <div>
+              <p class="mono">( 002 )</p>
+              <h3 class="mono service__title">Product Redesign for Growth</h3>
+              <p class="service__text">Improve conversion rates, retention, and user satisfaction through optimized UX.</p>
+            </div>
+          </li>
+          <li class="service" style="--bg: #ffc9c9">
+            <img class="service__icon" src="assets/img/service-3.svg" alt="" width="56" height="56">
+            <div>
+              <p class="mono">( 003 )</p>
+              <h3 class="mono service__title">UX/Product Audit</h3>
+              <p class="service__text">In-depth review of an existing product with actionable recommendations.</p>
+            </div>
+          </li>
+          <li class="service" style="--bg: #fedca6">
+            <img class="service__icon" src="assets/img/service-4.svg" alt="" width="56" height="56">
+            <div>
+              <p class="mono">( 004 )</p>
+              <h3 class="mono service__title">End-to-End Product Design</h3>
+              <p class="service__text">Complete service covering website, web or mobile app interfaces, and brand guidelines.</p>
+            </div>
+          </li>
+        </ul>
+        <button class="services__arrow services__arrow--prev" aria-label="Previous service"><img src="assets/img/arrow-left.svg" alt=""></button>
+        <button class="services__arrow services__arrow--next" aria-label="Next service"><img src="assets/img/arrow-right.svg" alt=""></button>
+      </div>
+    </section>
+
+    <!-- Highlights -->
+    <section class="section highlights">
+      <h2 class="h-lg reveal reveal--down">Highlights from<br>my journey in product design.</h2>
+      <div class="stats reveal reveal--up">
+        <div class="stat reveal reveal--up50">
+          <p class="stat__num"><span data-count="12">0</span> years</p>
+          <p class="stat__text">Of hands-on experience in product design across multiple industries.</p>
+        </div>
+        <div class="stat reveal reveal--up50">
+          <p class="stat__num"><span data-count="3">0</span> startups</p>
+          <p class="stat__text">Designed and launched from 0 to 1, covering the full product journey.</p>
+        </div>
+        <div class="stat reveal reveal--up50">
+          <p class="stat__num"><span data-count="11">0</span> ux tests</p>
+          <p class="stat__text">Conducted to validate ideas and improve user experience.</p>
+        </div>
+        <div class="stat reveal reveal--up50">
+          <p class="stat__num"><span data-count="13">0</span> AB tests</p>
+          <p class="stat__text">Launched to optimize conversion and engagement.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials">
+      <div class="reveal reveal--down">
+        <p class="mono center">( TESTIMONIALS )</p>
+        <h2 class="h-lg center">Trusted by leaders.</h2>
+      </div>
+      <article class="testimonial reveal reveal--up">
+        <img class="testimonial__photo" src="assets/img/testimonial-serhii.jpg" alt="Serhii Zinchenko" loading="lazy">
+        <div class="testimonial__body">
+          <blockquote class="testimonial__quote">I have the pleasure of working with Anna at Claid where she consistently demonstrates exceptional design skills, attention to detail, and a deep understanding of user-centered design principles.</blockquote>
+          <div>
+            <p class="testimonial__name">Serhii Zinchenko</p>
+            <p class="muted testimonial__role">Product Leader | Reforge Alumni | Product Mentor @ Prjctr</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Blog -->
+    <section class="section blog">
+      <div class="section__head reveal reveal--up50">
+        <h2 class="h-xxl">Creative<br>dispatch</h2>
+        <a class="plus-link" href="blog.html">Visit Blog <span class="plus" aria-hidden="true"></span></a>
+      </div>
+      <div class="blog__grid">
+        <a class="post reveal reveal--up" href="blog/how-to-prepare-usability-testing-research.html">
+          <div class="post__media"><img src="assets/img/blog-usability.webp" alt="" loading="lazy"></div>
+          <div class="post__body">
+            <p class="mono">Dec 23, 2024</p>
+            <h3 class="post__title">How to prepare Usability Testing &amp; Research</h3>
+          </div>
+        </a>
+        <a class="post reveal reveal--up" href="blog/improving-user-engagement-in-genai-product.html">
+          <div class="post__media"><img src="assets/img/blog-genai.webp" alt="" loading="lazy"></div>
+          <div class="post__body">
+            <p class="mono">Apr 1, 2024</p>
+            <h3 class="post__title">Improving user engagement in Gen AI product. Case Study.</h3>
+          </div>
+        </a>
+        <a class="post reveal reveal--up" href="blog/how-to-design-a-notification-center-for-your-app.html">
+          <div class="post__media"><img src="assets/img/blog-notifications.webp" alt="" loading="lazy"></div>
+          <div class="post__body">
+            <p class="mono">Oct 5, 2019</p>
+            <h3 class="post__title">How to design a notification center for your app</h3>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__top">
+      <img src="assets/img/logo.png" alt="Podvoiska logo" width="65" height="65">
+      <div class="socials mono">
+        <a href="https://www.linkedin.com/in/podvoiska/" target="_blank" rel="noopener">IN</a><span>/</span>
+        <a href="https://adplist.org/mentors/anna-podvoiska" target="_blank" rel="noopener">ADP</a><span>/</span>
+        <a href="https://medium.com/@podvoiska" target="_blank" rel="noopener">M</a>
+      </div>
+    </div>
+    <div class="footer__cta">
+      <h2 class="h-md">Working on something new and need design support? Let’s talk.</h2>
+      <a class="underline-link" href="mailto:anna.podvoiska@gmail.com">anna.podvoiska@gmail.com</a>
+    </div>
+    <div class="footer__bottom">
+      <nav class="footer__nav">
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <p class="mono">( ©Podvoiska® )</p>
+    </div>
+  </footer>
+
+  <!-- Progressive blur along the bottom edge of the screen -->
+  <div class="edge-blur" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

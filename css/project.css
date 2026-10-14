@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Project (case study) page
+   Figma: Concepts / AI photo studio (2560:14126)
+   Uses the tokens from style.css
+   ========================================================================== */
+
+.project {
+  --muted-label: #958f83;
+  --text: #e0d8c9;
+  --column: 966px;
+  position: relative;
+  padding-bottom: 153px;
+}
+
+/* ---------- close (right side of the shared header, like the nav on the home page) ---------- */
+.project__close {
+  flex: none;
+  margin-top: calc((31px * .92 - 46px) / 2); /* centred on the name line (31px × .92 line height) */
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  transition: background-color .25s var(--ease);
+}
+.project__close svg { width: 46px; height: 46px; fill: #f1eee3; }
+.project__close:hover { background: var(--card-hover); }
+.project__close:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- title ---------- */
+.project__head {
+  margin-top: 120px; /* 162 from the top of the page */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.project__title {
+  font-weight: 400;
+  font-size: 42px;
+  line-height: .92;
+  letter-spacing: -.01em;
+}
+.project__meta {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- content column ---------- */
+.project__body {
+  max-width: var(--column);
+  margin: 42px auto 0;
+}
+.project__text {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 32px;
+  color: var(--text);
+}
+.project__lead { font-weight: 400; }
+.project__facts { display: flex; flex-direction: column; gap: 18px; }
+.project__facts div { display: flex; flex-direction: column; gap: 8px; }
+.project__facts dt { color: var(--muted-label); font-size: 16px; line-height: normal; }
+.project__facts dd { margin: 0; }
+
+.project__panel {
+  margin: 42px 0 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #f3f5f9;
+}
+.project__panel img { width: 100%; height: auto; }
+.project__panel + .project__text { margin-top: 42px; }
+
+/* ---------- slider (js/slider.js) ---------- */
+.slider { margin-top: 42px; }
+.project__text + .slider { margin-top: 42px; }
+/* Smooth, endless slider. The track is the window; the rail inside it moves. */
+.slider { --slide-w: 100%; --gap: 24px; --slide-ease: cubic-bezier(.76, 0, .24, 1); --slide-dur: .9s; }
+.slider__track {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  outline-offset: 3px;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.slider__track.is-dragging { cursor: grabbing; }
+.slider__track:focus-visible { outline: 2px solid var(--ink); }
+.slider__rail {
+  display: flex;
+  gap: var(--gap);
+  will-change: transform;
+}
+.slider__rail.is-moving { transition: transform var(--slide-dur) var(--slide-ease); }
+.slider__slide {
+  flex: 0 0 var(--slide-w);
+  margin: 0;
+  aspect-ratio: 966 / 528;
+  background: #2a2928;
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: opacity var(--slide-dur) var(--slide-ease);
+}
+.slider__slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transform: scale(1.08);
+  transition: transform calc(var(--slide-dur) * 1.4) var(--slide-ease);
+}
+/* the incoming image settles from a slight zoom */
+.slider__slide.is-active img { transform: none; }
+.slider__slide.no-anim, .slider__slide.no-anim img { transition: none; }
+
+.slider__controls {
+  width: 358px;
+  max-width: 100%;
+  margin: 42px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.slider__controls + .project__text { margin-top: 42px; }
+.slider__btn {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  padding: 12px;
+  border-radius: 40px;
+  background: var(--card);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background-color .25s var(--ease), transform .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+.slider__btn:active { transform: scale(.88); }
+.slider__btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.slider__btn--prev svg { transform: scaleX(-1); }
+.slider__btn:hover { background: var(--card-hover); }
+.slider__btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.slider__bar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: rgba(224, 216, 201, .2);
+  overflow: hidden;
+}
+.slider__progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: rgba(224, 216, 201, .7);
+  transition: transform var(--slide-dur, .9s) var(--slide-ease, ease);
+}
+
+/* ---------- header: same centered container and position as the home page (.site-header) ---------- */
+.project__top { margin-bottom: 0; align-items: flex-start; }
+.project__top + .project__head { margin-top: 82px; } /* title at 192 */
+
+/* ---------- list & subheads ---------- */
+.project__list { margin: 0; padding-left: 30px; list-style: disc; }
+.project__subhead { font-weight: 700; font-size: inherit; line-height: inherit; }
+
+/* ---------- inset panel: image on a light card with a margin ---------- */
+.project__panel--inset {
+  background: #f3f4f7;
+  padding: 2.588% 4.037%; /* 25 / 39 of 966 */
+}
+.project__panel--inset img { border-radius: var(--radius); }
+
+/* ---------- peek slider: neighbours visible at the sides, 50% opacity ---------- */
+.project { overflow-x: clip; }
+.slider--peek { --slide-w: min(966px, 100vw - 2 * var(--gutter)); --gap: 30px; }
+.slider--peek .slider__track {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding-inline: calc((100vw - var(--slide-w)) / 2);
+  border-radius: 0;
+}
+.slider--peek .slider__slide { opacity: .5; }
+.slider--peek .slider__slide.is-active { opacity: 1; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 640px) {
+  .project { padding-bottom: 64px; }
+  .project__close { margin-top: calc((26px * .92 - 40px) / 2); width: 40px; height: 40px; }
+  .project__close svg { width: 40px; height: 40px; }
+  .project__head { margin-top: 72px; }
+  .project__title { font-size: 32px; }
+  .project__text { font-size: 17px; line-height: 27px; }
+  .project__meta { font-size: 17px; }
+  .project__body { margin-top: 40px; }
+  .project__panel { margin-top: 24px; border-radius: 14px; }
+  .project__panel + .project__text { margin-top: 24px; }
+  .slider, .project__text + .slider { margin-top: 24px; }
+  .slider__track { border-radius: 14px; }
+  .slider__slide { border-radius: 14px; }
+  .slider--peek { --gap: 12px; }
+  .project__top + .project__head { margin-top: 48px; }
+  .project__list { padding-left: 22px; }
+  .slider__controls { margin-top: 20px; }
+  .slider__controls + .project__text { margin-top: 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider__slide, .slider__slide img, .slider__progress, .slider__btn { transition: none; }
+  .slider__slide img { transform: none; }
+}
