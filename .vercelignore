@@ -1,3 +1,5 @@
 # Kept in the repo, but not published on the site
 _old-framer
-animations
+# the old Cloudberry phone animation (unused). Don't ignore all of animations/:
+# the home Study assistant card loads its icons from animations/study-assistant/
+animations/cloudberry-prototype
