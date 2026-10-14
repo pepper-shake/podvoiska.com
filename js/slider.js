@@ -4,7 +4,7 @@
 //         </div>
 // - Endless: slides are cloned on both sides, so it never rewinds from the last slide to the first.
 // - Moves with a smooth ease; the incoming image settles from a slight zoom while it brightens.
-// - Drag / swipe with mouse or touch, ← → buttons (added here), arrow keys when focused.
+// - Drag / swipe with mouse or touch, click an image, ← → buttons (added here), arrow keys when focused.
 (() => {
   const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 8h8.333M8.333 12l4-4-4-4"/></svg>';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -108,6 +108,12 @@
     track.addEventListener('pointercancel', end);
     // a drag shouldn't count as a click on anything inside the slider
     track.addEventListener('click', (e) => { if (Math.abs(dx) > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+    // click an image: a neighbour slides into the middle, the active one moves on to the next
+    track.addEventListener('click', (e) => {
+      const i = slides.indexOf(e.target.closest('.slider__slide'));
+      if (i < 0) return;
+      go(i === index ? index + 1 : i);
+    });
     track.addEventListener('dragstart', (e) => e.preventDefault());
 
     // keep the active slide in place whenever the slider changes size (window resize, orientation, fonts…)

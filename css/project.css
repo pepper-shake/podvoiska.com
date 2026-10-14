@@ -97,6 +97,8 @@
   -webkit-user-select: none;
 }
 .slider__track.is-dragging { cursor: grabbing; }
+.slider__slide { cursor: pointer; }
+.slider__track.is-dragging .slider__slide { cursor: grabbing; }
 .slider__track:focus-visible { outline: 2px solid var(--ink); }
 .slider__rail {
   display: flex;
@@ -173,8 +175,11 @@
   transition: transform var(--slide-dur, .9s) var(--slide-ease, ease);
 }
 
-/* ---------- header: same centered container and position as the home page (.site-header) ---------- */
-.project__top { margin-bottom: 0; align-items: flex-start; }
+/* ---------- header: the same .site-header as the home page ---------- */
+.project__top { margin-bottom: 0; } /* pinned and hidden on scroll like every .site-header (style.css) */
+
+/* the top blur (style.css) is taller here so it reaches below the pinned header */
+.project .top-blur { height: 150px; }
 .project__top + .project__head { margin-top: 82px; } /* title at 192 */
 
 /* ---------- list & subheads ---------- */
@@ -217,6 +222,7 @@
   .slider__slide { border-radius: 14px; }
   .slider--peek { --gap: 12px; }
   .project__top + .project__head { margin-top: 48px; }
+  .project .top-blur { height: 120px; }
   .project__list { padding-left: 22px; }
   .slider__controls { margin-top: 20px; }
   .slider__controls + .project__text { margin-top: 32px; }
@@ -225,4 +231,44 @@
 @media (prefers-reduced-motion: reduce) {
   .slider__slide, .slider__slide img, .slider__progress, .slider__btn { transition: none; }
   .slider__slide img { transform: none; }
+}
+
+/* ---------- pages carousel: full-length website designs in one row (js/pages.js) ----------
+   Every page has the same height; its width follows the image. The row is full-bleed,
+   starts in line with the text column and scrolls sideways (trackpad, swipe, drag, ← →). */
+.pages { margin-top: 42px; }
+.pages__track {
+  --pages-h: min(775px, 72vh);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 0 max(var(--gutter), (100vw - var(--column)) / 2);
+  scroll-padding-inline: max(var(--gutter), (100vw - var(--column)) / 2);
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pages__track::-webkit-scrollbar { display: none; }
+.pages__track:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.pages__track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.pages__item {
+  flex: none;
+  margin: 0;
+  height: var(--pages-h);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f5f9;
+  scroll-snap-align: start;
+}
+.pages__item img { width: auto; height: 100%; pointer-events: none; }
+
+/* phone: a shorter row, swiped with a finger */
+@media (max-width: 640px) {
+  .pages { margin-top: 24px; }
+  .pages__track { --pages-h: 480px; gap: 12px; }
 }
