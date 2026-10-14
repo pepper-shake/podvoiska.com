@@ -256,36 +256,6 @@ img { display: block; max-width: 100%; }
 }
 .card--text:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* ---------- composed cover with a live phone screen (Personal kids stories)
-   Figma: Concepts / 2576:42509 — a 1374×1374 composition, cover-fitted like .ba.
-   Layers: background + side screens + phone frame, and the prototype animation (iframe) in the phone. */
-.card__frame:has(.comp) { container-type: size; }
-.comp {
-  position: absolute;
-  left: 50%; top: 50%;
-  width: max(100cqw, 100cqh);
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  container-type: inline-size;
-}
-.comp__base { position: absolute; inset: 0; width: 100%; height: 100%; }
-/* phone screen: 484×1034 at (440, 165), corner radius 60 (all in 1374 units) */
-.comp__screen {
-  position: absolute;
-  left: 31.999%; top: 12.009%;
-  width: 35.249%; height: 75.266%;
-  border-radius: 4.367cqw;
-  overflow: hidden;
-}
-.comp__screen iframe {
-  position: absolute;
-  left: 0; top: .483%;
-  width: 100%; height: 101.44%; /* 430×932 screen at 484 wide */
-  border: 0;
-  pointer-events: none;
-}
-
-
 /* ---------- Gen AI Illustrations card: sliding illustrations above the text (Figma: Concepts / Section 1, 2573:41213) ---------- */
 /* icons row: 938×218 in a 430 card, sits 6px above the card's top edge */
 .card__marquee {

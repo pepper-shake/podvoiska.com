@@ -80,6 +80,10 @@
 }
 .project__panel img { width: 100%; height: auto; }
 .project__panel + .project__text { margin-top: 42px; }
+/* a page that opens with a picture (About): 42 below the title, like the text */
+.project__body > .project__panel:first-child { margin-top: 0; }
+/* About: one continuous story, regular weight, no gaps between paragraphs */
+.project__text--flow { gap: 0; font-weight: 400; }
 
 /* ---------- carousel controls: ← progress → (added by js/pages.js) ---------- */
 .slider__controls {
