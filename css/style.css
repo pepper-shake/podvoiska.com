@@ -258,7 +258,7 @@ img { display: block; max-width: 100%; }
 
 /* ---------- composed cover with a live phone screen (Personal kids stories)
    Figma: Concepts / 2576:42509 — a 1374×1374 composition, cover-fitted like .ba.
-   Layers: background + side screens + phone frame, the prototype animation (iframe) in the phone, clouds on top. */
+   Layers: background + side screens + phone frame, and the prototype animation (iframe) in the phone. */
 .card__frame:has(.comp) { container-type: size; }
 .comp {
   position: absolute;
@@ -284,16 +284,9 @@ img { display: block; max-width: 100%; }
   border: 0;
   pointer-events: none;
 }
-.comp__clouds { position: absolute; left: 0; top: 50%; width: 100%; height: 50%; }
 
 
-/* ---------- cream card with sliding illustrations (Figma: Concepts / Section 1, 2573:41213) ---------- */
-.card--cream { background: #fdf6eb; color: #1b1b1b; }
-.card--cream .card__meta { color: var(--ink-muted); }
-@media (hover: hover) {
-  .card--cream:hover { background: #f8eedf; }
-}
-.card--cream:focus-visible { outline-color: var(--ink); }
+/* ---------- Gen AI Illustrations card: sliding illustrations above the text (Figma: Concepts / Section 1, 2573:41213) ---------- */
 /* icons row: 938×218 in a 430 card, sits 6px above the card's top edge */
 .card__marquee {
   position: absolute;

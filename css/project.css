@@ -81,51 +81,7 @@
 .project__panel img { width: 100%; height: auto; }
 .project__panel + .project__text { margin-top: 42px; }
 
-/* ---------- slider (js/slider.js) ---------- */
-.slider { margin-top: 42px; }
-.project__text + .slider { margin-top: 42px; }
-/* Smooth, endless slider. The track is the window; the rail inside it moves. */
-.slider { --slide-w: 100%; --gap: 24px; --slide-ease: cubic-bezier(.76, 0, .24, 1); --slide-dur: .9s; }
-.slider__track {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius);
-  outline-offset: 3px;
-  touch-action: pan-y;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.slider__track.is-dragging { cursor: grabbing; }
-.slider__slide { cursor: pointer; }
-.slider__track.is-dragging .slider__slide { cursor: grabbing; }
-.slider__track:focus-visible { outline: 2px solid var(--ink); }
-.slider__rail {
-  display: flex;
-  gap: var(--gap);
-  will-change: transform;
-}
-.slider__rail.is-moving { transition: transform var(--slide-dur) var(--slide-ease); }
-.slider__slide {
-  flex: 0 0 var(--slide-w);
-  margin: 0;
-  aspect-ratio: 966 / 528;
-  background: #2a2928;
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: opacity var(--slide-dur) var(--slide-ease);
-}
-.slider__slide img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  transform: scale(1.08);
-  transition: transform calc(var(--slide-dur) * 1.4) var(--slide-ease);
-}
-/* the incoming image settles from a slight zoom */
-.slider__slide.is-active img { transform: none; }
-.slider__slide.no-anim, .slider__slide.no-anim img { transition: none; }
-
+/* ---------- carousel controls: ← progress → (added by js/pages.js) ---------- */
 .slider__controls {
   width: 358px;
   max-width: 100%;
@@ -172,7 +128,6 @@
   position: absolute;
   inset: 0 auto 0 0;
   background: rgba(224, 216, 201, .7);
-  transition: transform var(--slide-dur, .9s) var(--slide-ease, ease);
 }
 
 /* ---------- header: the same .site-header as the home page ---------- */
@@ -186,24 +141,8 @@
 .project__list { margin: 0; padding-left: 30px; list-style: disc; }
 .project__subhead { font-weight: 700; font-size: inherit; line-height: inherit; }
 
-/* ---------- inset panel: image on a light card with a margin ---------- */
-.project__panel--inset {
-  background: #f3f4f7;
-  padding: 2.588% 4.037%; /* 25 / 39 of 966 */
-}
-.project__panel--inset img { border-radius: var(--radius); }
-
-/* ---------- peek slider: neighbours visible at the sides, 50% opacity ---------- */
+/* full-bleed carousels must not widen the page */
 .project { overflow-x: clip; }
-.slider--peek { --slide-w: min(966px, 100vw - 2 * var(--gutter)); --gap: 30px; }
-.slider--peek .slider__track {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  padding-inline: calc((100vw - var(--slide-w)) / 2);
-  border-radius: 0;
-}
-.slider--peek .slider__slide { opacity: .5; }
-.slider--peek .slider__slide.is-active { opacity: 1; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 640px) {
@@ -217,10 +156,6 @@
   .project__body { margin-top: 40px; }
   .project__panel { margin-top: 24px; border-radius: 14px; }
   .project__panel + .project__text { margin-top: 24px; }
-  .slider, .project__text + .slider { margin-top: 24px; }
-  .slider__track { border-radius: 14px; }
-  .slider__slide { border-radius: 14px; }
-  .slider--peek { --gap: 12px; }
   .project__top + .project__head { margin-top: 48px; }
   .project .top-blur { height: 120px; }
   .project__list { padding-left: 22px; }
@@ -229,12 +164,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .slider__slide, .slider__slide img, .slider__progress, .slider__btn { transition: none; }
-  .slider__slide img { transform: none; }
+  .slider__btn { transition: none; }
 }
 
-/* ---------- pages carousel: full-length website designs in one row (js/pages.js) ----------
-   Every page has the same height; its width follows the image. The row is full-bleed,
+/* ---------- carousel on every project page (js/pages.js) ----------
+   Every image has the same height; its width follows the image. The row is full-bleed,
    starts in line with the text column and scrolls sideways (trackpad, swipe, drag, ← →). */
 .pages { margin-top: 42px; }
 .pages__track {
@@ -266,9 +200,17 @@
   scroll-snap-align: start;
 }
 .pages__item img { width: auto; height: 100%; pointer-events: none; }
+/* wide: 966×528 slides (Gen AI Illustrations, API Playground), the full column width, Figma gap 30 */
+.pages--wide .pages__track {
+  --pages-h: calc(min(966px, 100vw - 2 * var(--gutter)) * 528 / 966);
+  gap: 30px;
+}
+.pages--wide .pages__item { border-radius: var(--radius); }
 
 /* phone: a shorter row, swiped with a finger */
 @media (max-width: 640px) {
   .pages { margin-top: 24px; }
   .pages__track { --pages-h: 480px; gap: 12px; }
+  .pages--wide .pages__track { gap: 12px; }
+  .pages--wide .pages__item { border-radius: 14px; }
 }

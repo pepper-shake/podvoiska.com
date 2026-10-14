@@ -2,7 +2,7 @@
 // 1. Content fades and slides up 40px the first time it scrolls into view (once).
 // 2. Progressive blur strips fixed to the bottom and the top of the screen.
 // 3. Every page: the header is pinned in front of the top blur; both hide on scroll down and return on scroll up.
-// Load after any script that adds content (e.g. slider.js adds the slider buttons).
+// Load after any script that adds content (e.g. pages.js adds the carousel buttons).
 (() => {
   /* ---------- reveal on scroll ---------- */
   const targets = document.querySelectorAll('.grid > .card, .project__head, .project__body > *');
