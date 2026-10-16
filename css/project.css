@@ -204,9 +204,10 @@
   scroll-snap-align: start;
 }
 .pages__item img { width: auto; height: 100%; pointer-events: none; }
-/* wide: 966×528 slides (Gen AI Illustrations, API Playground), the full column width, Figma gap 30 */
+/* wide: 966-wide slides at the full column width, Figma gap 30.
+   Slide height is 528 (Gen AI Illustrations, API Playground) unless the page sets --slide-h (Study assistant: 603). */
 .pages--wide .pages__track {
-  --pages-h: calc(min(966px, 100vw - 2 * var(--gutter)) * 528 / 966);
+  --pages-h: calc(min(966px, 100vw - 2 * var(--gutter)) * var(--slide-h, 528) / 966);
   gap: 30px;
 }
 .pages--wide .pages__item { border-radius: var(--radius); }
