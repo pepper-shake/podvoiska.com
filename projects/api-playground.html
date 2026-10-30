@@ -13,6 +13,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;700&family=Inter:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/project.css">
+  <!-- Google Analytics (production only) -->
+  <script>
+    if (location.hostname.endsWith('podvoiska.com')) {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-6231RP7KKW';
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6231RP7KKW');
+    }
+  </script>
 </head>
 <body class="project">
   <header class="site-header project__top">
